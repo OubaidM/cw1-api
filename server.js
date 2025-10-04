@@ -8,13 +8,14 @@ import orderRoutes from './routes/orderRoutes.js';
 import searchRoutes from './routes/searchRoutes.js'
 import cors from 'cors';
 
-app.use(cors());
+
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(logger);
 app.use('/images', staticMw);
+app.use(cors());
 
 const PORT = process.env.PORT || 4000;
 
