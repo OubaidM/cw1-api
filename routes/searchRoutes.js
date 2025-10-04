@@ -7,15 +7,28 @@ router.get('/search', async (req, res) => {
   if (!q) return res.json([]);
 
   const col = req.app.locals.db.collection('lessons');
-  const filter = {
-    $or: [
-      { topic: { $regex: q, $options: 'i' } },
-      { location: { $regex: q, $options: 'i' } },
-      { price: { $regex: q, $options: 'i' } },
-      { space: { $regex: q, $options: 'i' } }
-    ]
-  };
-  const results = await col.find(filter).toArray();
+  const results = await col
+    .aggregate([
+      {
+        $addFields: {
+          priceStr: { $toString: '$price' },
+          spaceStr: { $toString: '$space' }
+        }
+      },
+      {
+        $match: {
+          $or: [
+            { topic: { $regex: q, $options: 'i' } },
+            { location: { $regex: q, $options: 'i' } },
+            { priceStr: { $regex: q, $options: 'i' } },
+            { spaceStr: { $regex: q, $options: 'i' } }
+          ]
+        }
+      },
+      { $project: { priceStr: 0, spaceStr: 0 } } // drop temp fields
+    ])
+    .toArray();
+
   res.json(results);
 });
 
