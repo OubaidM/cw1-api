@@ -14,15 +14,16 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(logger);
-app.use('/images', staticMw);
 app.use(cors());
+app.use('/images', staticMw);
+
 
 const PORT = process.env.PORT || 4000;
 
 MongoClient.connect(process.env.MONGO_URI)
   .then(client => {
     app.locals.db = client.db('afterSchool');
-    app.listen(PORT, () => console.log('API on', PORT));   // ← only once
+    app.listen(PORT, () => console.log('API on', PORT));
   })
   .catch(err => console.error(err));
 
