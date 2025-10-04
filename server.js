@@ -4,6 +4,7 @@ import { MongoClient } from 'mongodb';
 import logger from './middleware/logger.js';
 import staticMw from './middleware/static.js';
 import lessonRoutes from './routes/lessonRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -19,3 +20,4 @@ MongoClient.connect(process.env.MONGO_URI)
   .catch(err => console.error(err));
 
 app.use('/lessons', lessonRoutes);
+app.use('/orders', orderRoutes);
