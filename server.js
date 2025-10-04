@@ -6,6 +6,9 @@ import staticMw from './middleware/static.js';
 import lessonRoutes from './routes/lessonRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import searchRoutes from './routes/searchRoutes.js'
+import cors from 'cors';
+
+app.use(cors());
 
 dotenv.config();
 const app = express();
